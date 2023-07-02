@@ -40,5 +40,25 @@ jobs:
         with:
           context: .
           push: true
+          target: runtime
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
+
+      - name: Extract metadata (tags, labels) for Docker SE
+        id: meta-se
+        uses: docker/metadata-action@v3
+        with:
+          images: ghcr.io/${{ github.repository }}
+          flavor: |
+            latest=auto
+            prefix=
+            suffix=se
+
+      - name: Build and push SE
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          push: true
+          target: squash
+          tags: ${{ steps.meta-se.outputs.tags }}
+          labels: ${{ steps.meta-se.outputs.labels }}
