@@ -52,7 +52,7 @@ jobs:
           flavor: |
             latest=auto
             prefix=
-            suffix=se
+            suffix=-se
 
       - name: Build and push SE
         uses: docker/build-push-action@v2
