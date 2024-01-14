@@ -67,6 +67,14 @@ pushd migrations
 popd
 ```
 
+### Example: Deadpool
+
+```rust
+let mut conn = pool.get().await?;
+let client = conn.deref_mut().deref_mut();
+let report = embedded::migrations::runner().run_async(client).await?;
+```
+
 ### Non-contiguous VS Contiguous migrations
 
 Depending on how your project/team has been structured will define whether you want to use contiguous (adjacent) migrations `V{1}__{2}.[sql|rs]` or non-contiguous (not adjacent) migrations `U{1}__{2}.[sql|rs]`.
@@ -85,7 +93,8 @@ By default, refinery runs each migration in a single transaction. Alternatively,
 
 ### Rollback
 
-refinery's design is based on [flyway](https://flywaydb.org/) and so, shares its [perspective](https://flywaydb.org/documentation/command/undo#important-notes) on undo/rollback migrations. To undo/rollback a migration, you have to generate a new one and write specifically what you want to undo.
+refinery's design was based on [flyway](https://flywaydb.org/) and so, it shares its earlier [philosophy](https://web.archive.org/web/20191226033347/https://flywaydb.org/documentation/command/undo#important-notes) on undo/rollback migrations. 
+Flyway has since changed it's opinion but refinery hasn't. To undo/rollback a migration, you have to generate a new one and write specifically what you want to undo.
 
 ## MSRV
 
